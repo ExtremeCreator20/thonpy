@@ -2,25 +2,21 @@ import json, os
 
 os.system("cls")
 
-def swapdata(data):
-    try:
-        datad = json.load(data)
-        keys = list(datad.keys())
-        if len(keys) >= 2:
-            keys[0], keys[1] = keys[1], keys[0]
-            swapped_data = {key: datad[key] for key in keys}
-            return json.dumps(swapped_data)
-    except json.JSONDecodeError as error:
-        raise error
+while True:
+    locale = input("Locale: ")
 
-locale = input("Locale: ")
+    read = open(f"{os.getcwd()}/lang/{locale}.json", "r")
+    
+    original = json.loads(read.read())
 
-dumpread = open(f"{os.getcwd()}/lang/{locale}.json", "r")
-dumpwrite = open(f"{os.getcwd()}/lang/{locale}.json", "w")
+    read.close()
 
-processed = swapdata(dumpread)
+    swap = {value: key for key, value in original.items()}
 
-dumpwrite.write(processed)
-dumpwrite.close()
+    write = open(f"{os.getcwd()}/lang/{locale}.json", "w")
 
-print(f"Process finished! Swapped locale: {locale}")
+    json.dump(swap, write)
+
+    write.close()
+
+    print(f"Process finished! Swapped locale: {locale}")
